@@ -1,0 +1,12 @@
+shell脚本说明：
+	1、调起XX_optimize.R脚本的shell脚本：R_ahead_XX_get_model.sh
+	2、调起XX.R脚本的shell脚本：R_XX_get_model.sh
+	
+	
+R脚本说明：
+	1、XX_optimize.R 模型优化选变量
+	2、XX.R 运用模型跑出预测名单
+	
+其中XX可以替代为CC（信用卡）、Ln（小贷）、Star（中高端客户）
+
+

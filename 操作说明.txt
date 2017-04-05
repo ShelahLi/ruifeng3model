@@ -1,0 +1,65 @@
+﻿#Copyright @Hangzhou Yatop Co.Ltd.
+#All Right Reserved
+#author:XM
+#date:20170314 π节纪念版
+
+
+#本次升级做了以下几点优化：
+#1、将模型的代码分成两部分跑，费时的优化部分放在月底前一天跑，节省月底跑模型时的时间。
+#2、增加optimize_result.txt指标，作为评价模型的指示
+#3、增加AUC.txt指标，评价目前模型的可用性
+#4、修改变量名，增加代码可读性
+#5、增加代码给部分说明文字，增加log文件的可理解性
+#6、优化结果文件XX_variable_list.txt保存了选出的变量名，可以手工修改。
+
+
+cd /etl/etldata/script
+
+上传R文件夹,R_XX_get_model.sh,R_ahead_XX_get_model.sh 至目录/etl/etldata/script
+
+cd /etl/etldata/script
+chmod +x *.sh
+
+cd /etl/etldata/script/R
+chmod +x *.R
+
+##信用卡
+#提前跑部分
+ nohup /etl/etldata/script/R_ahead_cc_get_model.sh 20161230  &
+   #查看日志 /etl/etldata/log/msg/20161230/R/CC_optimize.log 
+#月底跑部分
+ nohup /etl/etldata/script/R_cc_get_model.sh 20161231   &
+   #查看日志 /etl/etldata/log/msg/20161231/R/CC.log 
+ 
+##小贷
+#提前跑部分
+ nohup /etl/etldata/script/R_ahead_ln_get_model.sh 20161230  &
+   #查看日志 /etl/etldata/log/msg/20161230/R/Ln_optimize.log 
+#月底跑部分
+ nohup /etl/etldata/script/R_ln_get_model.sh 20161231   &
+   #查看日志 /etl/etldata/log/msg/20161231/R/Ln.log  
+   
+##星级
+#提前跑部分
+ nohup /etl/etldata/script/R_ahead_star_get_model.sh 20161230  &
+    #查看日志 /etl/etldata/log/msg/20161230/R/Star_optimize.log
+#月底跑部分 
+ nohup /etl/etldata/script/R_star_get_model.sh 20161231   &
+    #查看日志 /etl/etldata/log/msg/20161231/R/Star.log  
+ 
+
+
+在路径/etl/etldata/output/20161231下可以找到模型生成的名单和模型的AUC.txt
+#信用卡模型名单
+/etl/etldata/output/20161231/cc/CCListOfNohold.csv
+/etl/etldata/output/20161231/cc/CClistOfHold.csv
+#小贷名单
+/etl/etldata/output/20161231/ln/LnList.csv
+#星级
+/etl/etldata/output/20161231/star/StarList.csv
+
+
+
+在路径/etl/etldata/script/conf下可以找到指标文件：
+XX_variable_list.txt #包含所选出的变量信息
+optimize_result.txt #回测的AUC和验证集AUC,以及他们的差
